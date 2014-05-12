@@ -1,0 +1,260 @@
+-* Copyright 1996-2011 Information Builders, Inc. All rights reserved.
+-* Takes:
+-* &DIMENSION : type = sort column    , default value = "ProductNumber"
+-* &MEASURE   : type = measure column , default value = "WarrantyExp"
+-* &DRILL2    : type = sort column    , default value = "Region"
+-* &DRILL3    : type = sort column    , default value = "StoreName"
+-* &PERIOD    : type = filter         , default value="Y"
+-*              values = Y | M | Q
+-* &WFFMT     : type = output format  , default value="HTML"
+-*              values = HTML | EXL2K | EXL2K FORMULA | PDF
+-*******************************************************************
+-SET &ECHO='ALL';
+-* Including the demonstration initialization procedure
+-INCLUDE ibidemo_init
+-* Including procedure-specific initialization procedure for setting up procedure-specific defaults (WebFOCUS variables)
+-INCLUDE ibidemo_variance_init
+-* Including procedure-specific procedure for initialization of report-specific virtual fields (DEFINEs)
+-INCLUDE ibidemo_variance_defines
+TABLE FILE tradesalesview
+SUM
+     THIS_PERIOD AS '&THIS_PERIOD'
+     LAST_PERIOD AS '&LAST_PERIOD'
+     COMPUTE CHANGE_PREV/D12.2 = THIS_PERIOD - LAST_PERIOD; AS '&CHANGE_PREV'
+     COMPUTE CHANGE_PREVP/D12.2 = IF ( ( CHANGE_PREV * LAST_PERIOD ) EQ 0 ) THEN 0 ELSE ( ( CHANGE_PREV / LAST_PERIOD ) * 100 );
+ AS '&CHANGE_PREV%'
+     SAMEPERIOD_LAST_YEAR AS '&SAME_LYY'
+     COMPUTE CHANGE_LYY/D12.2 = THIS_PERIOD - SAMEPERIOD_LAST_YEAR;
+ AS '&CHANGE_LYY'
+     COMPUTE CHANGE_LYYP/D12.2 = IF ( ( CHANGE_LYY * SAMEPERIOD_LAST_YEAR ) EQ 0 ) THEN 0 ELSE ( ( CHANGE_LYY / SAMEPERIOD_LAST_YEAR ) * 100 );
+ AS '&CHANGE_LYY%'
+     DRLVL NOPRINT
+     DRILL_LIMIT NOPRINT
+BY &DIMENSION.Dimension.
+HEADING
+"&RPT_TITLE"
+"&DRILLTXT1 = &DRILLVALTXT1 , &DRILLTXT2 = &DRILLVALTXT2 , &DRILLTXT3 = &DRILLVALTXT3 "
+"&PERIODTXT "
+FOOTING
+"&NEXTDRILLTXT"
+WHERE &DRILL1   EQ '&DRILLVAL1';
+WHERE &DRILL2   EQ '&DRILLVAL2';
+WHERE &DRILL3   EQ '&DRILLVAL3';
+ON TABLE SET PAGE-NUM OFF
+ON TABLE SUMMARIZE AS 'TOTAL'
+ON TABLE PCHOLD FORMAT &WFFMT.(<HTML,HTML>,<PDF,PDF>,<Excel 2000,EXL2K>,<Excel Formula,EXL2K FORMULA>,<HTML Active Report,AHTML>,<PowerPoint,PPT>).Select type of display output.
+ON TABLE SET HTMLCSS ON
+ON TABLE SET STYLE *
+     UNITS=IN,
+     PAGESIZE='Letter',
+     LEFTMARGIN=0.500000,
+     RIGHTMARGIN=0.500000,
+     TOPMARGIN=0.500000,
+     BOTTOMMARGIN=0.500000,
+     SQUEEZE=ON,
+     ORIENTATION=LANDSCAPE,
+$
+     DEFMACRO=THIS_PERIOD_LT0,
+     MACTYPE=RULE,
+     WHEN=N2 LT 0,
+$
+     DEFMACRO=LAST_PERIOD_LT0,
+     MACTYPE=RULE,
+     WHEN=N3 LT 0,
+$
+     DEFMACRO=CHANGE_PREV_LT0,
+     MACTYPE=RULE,
+     WHEN=N4 LT 0,
+$
+     DEFMACRO=CHANGE_PREVP_LT0,
+     MACTYPE=RULE,
+     WHEN=N5 LT 0,
+$
+     DEFMACRO=CHANGE_PREVP_GT0,
+     MACTYPE=RULE,
+     WHEN=N5 GT 0,
+$
+     DEFMACRO=SAMEPERIOD_LAST_YEAR_LT0,
+     MACTYPE=RULE,
+     WHEN=N6 LT 0,
+$
+     DEFMACRO=CHANGE_LYY_LT0,
+     MACTYPE=RULE,
+     WHEN=N7 LT 0,
+$
+     DEFMACRO=CHANGE_LYYP_LT0,
+     MACTYPE=RULE,
+     WHEN=N8 LT 0,
+$
+     DEFMACRO=CHANGE_LYYP_GT0,
+     MACTYPE=RULE,
+     WHEN=N9 GT 0,
+$
+     DEFMACRO=DRILL,
+     MACTYPE=RULE,
+     WHEN=N9 LT N10,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N5,
+     GRAPHCOLOR='SILVER',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N5,
+     GRAPHCOLOR='RED',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+     MACRO=CHANGE_PREVP_LT0,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N5,
+     GRAPHCOLOR='LIME',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+     MACRO=CHANGE_PREVP_GT0,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N8,
+     GRAPHCOLOR='SILVER',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N8,
+     GRAPHCOLOR='RED',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+     MACRO=CHANGE_LYYP_LT0,
+$
+     GRAPHTYPE=DATA,
+     COLUMN=N8,
+     GRAPHCOLOR='LIME',
+     GRAPHLENGTH=0.500000,
+     GRAPHLOOK=BAR,
+     MACRO=CHANGE_LYYP_GT0,
+$
+TYPE=REPORT,
+     BORDER=LIGHT,
+     BORDER-COLOR='GRAY',
+     FONT='ARIAL',
+     SIZE=8,
+     COLOR='BLACK',
+     BACKCOLOR='NONE',
+     STYLE=NORMAL,
+     RIGHTGAP=0.027778,
+     LEFTGAP=0.027778,
+     TOPGAP=0.000000,
+     BOTTOMGAP=0.000000,
+$
+TYPE=DATA,
+     BACKCOLOR=( 'WHITE' RGB(234 234 234) ),
+     TOPGAP=0.041667,
+     BOTTOMGAP=0.041667,
+$
+TYPE=DATA,
+     COLUMN=N5,
+     COLOR='RED',
+     MACRO=CHANGE_PREVP_LT0,
+$
+TYPE=DATA,
+     COLUMN=N5,
+     MACRO=CHANGE_PREVP_GT0,
+$
+TYPE=DATA,
+     COLUMN=N8,
+     COLOR='RED',
+     MACRO=CHANGE_LYYP_LT0,
+$
+TYPE=DATA,
+     COLUMN=N8,
+     MACRO=CHANGE_LYYP_GT0,
+$
+TYPE=DATA,
+     COLUMN=N1,
+     FOCEXEC=ibidemo_variance.fex(DIMV=N1 DRILL='1' DIMENSION='&DIMENSION' DRLVL='&DRLVL' DRILL1='&DRILL1' DRILL2='&DRILL2' DRILL3='&DRILL3' DRV1_='&DRV1_' DRV2_='&DRV2_' DRV3_='&DRV3_' WFFMT='&WFFMT' PERIOD='&PERIOD' MEASURE='&MEASURE'),
+$
+TYPE=DATA,
+     COLUMN=N4,
+     COLOR='RED',
+     MACRO=CHANGE_PREV_LT0,
+$
+TYPE=DATA,
+     COLUMN=N7,
+     COLOR='RED',
+     MACRO=CHANGE_LYY_LT0,
+$
+TYPE=DATA,
+     COLUMN=N2,
+     COLOR='RED',
+     MACRO=THIS_PERIOD_LT0,
+$
+TYPE=DATA,
+     COLUMN=N3,
+     COLOR='RED',
+     MACRO=LAST_PERIOD_LT0,
+$
+TYPE=DATA,
+     COLUMN=N6,
+     COLOR='RED',
+     MACRO=SAMEPERIOD_LAST_YEAR_LT0,
+$
+TYPE=DATA,
+     ACROSSCOLUMN=N1,
+     SIZE=8,
+     BACKCOLOR=( BY=B4 'WHITE' RGB(230 230 230) ),
+$
+TYPE=TITLE,
+     BACKCOLOR=RGB(234 234 234),
+     JUSTIFY=CENTER,
+$
+TYPE=TABHEADING,
+     SIZE=9,
+     STYLE=BOLD,
+$
+TYPE=TABFOOTING,
+     SIZE=9,
+     STYLE=BOLD,
+$
+TYPE=HEADING,
+     BORDER-TOP=MEDIUM,
+     BORDER-BOTTOM=MEDIUM,
+     BORDER-LEFT=OFF,
+     BORDER-RIGHT=OFF,
+     BORDER-TOP-STYLE=OUTSET,
+     BORDER-BOTTOM-STYLE=OUTSET,
+     BORDER-COLOR=RGB(153 153 153),
+     SIZE=9,
+     JUSTIFY=CENTER,
+$
+TYPE=HEADING,
+     LINE=1,
+     STYLE=BOLD,
+$
+TYPE=FOOTING,
+     BORDER=OFF,
+     STYLE=BOLD,
+     JUSTIFY=CENTER,
+$
+TYPE=SUBHEAD,
+     STYLE=BOLD,
+$
+TYPE=SUBFOOT,
+     STYLE=BOLD,
+$
+TYPE=SUBTOTAL,
+     BACKCOLOR=RGB(234 234 234),
+     STYLE=BOLD,
+$
+TYPE=GRANDTOTAL,
+     BORDER-TOP=MEDIUM,
+     BORDER-BOTTOM=OFF,
+     BORDER-LEFT=OFF,
+     BORDER-RIGHT=OFF,
+     BACKCOLOR=RGB(234 234 234),
+$
+ENDSTYLE
+END
+-RUN
+-* Including error handling procedure
+-*-INCLUDE ibidemo_emptyreport

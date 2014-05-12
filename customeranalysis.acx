@@ -1,0 +1,2 @@
+ SEGNAME=CUSTOMERANALYSIS, TABLENAME=TradexDW.dbo.CustomerAnalysis, 
+   CONNECTION=TradexDW, KEYS=1, $

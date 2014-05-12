@@ -1,0 +1,16 @@
+.GRPFNT { font-family: ARIAL ; font-weight: bold ; font-size: 10pt ; color : BLUE ; }
+.HDFONT { font-family: ARIAL ; font-weight: bold ;font-size:20pt
+; color : BLACK ; BACKGROUND-COLOR: RGB(255 239, 85);  BORDER-LEFT: BLACK thin solid ;
+BORDER-BOTTOM: BLACK thin solid ;BORDER-RIGHT: BLACK thin solid ; BORDER-TOP: BLACK thin solid ; }
+.inputfont { font-family: ARIAL ; font-weight: BOLD ; font-size: 8pt ; color : BLACK ; }
+.LBOD { BACKGROUND-COLOR: RGB(206 207 206);  BORDER-LEFT: BLACK thin solid ;
+BORDER-BOTTOM: BLACK thin solid ;BORDER-RIGHT: BLACK thin solid ; BORDER-TOP: BLACK thin solid ; }
+.hdfont2 {font-family: ARIAL ; font-weight: BOLD ;font-size:   ; color : NAVY ;  }
+.subhdfont2 {font-family: ARIAL ; font-weight: BOLD ;font-size:   ; color : MAROON ;  }
+.line {BACKGROUND-COLOR: MAROON }
+.hdline {BACKGROUND-COLOR: NAVY }
+.pagetitle		{ filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=SILVER,endColorStr=#1B6AAD ); color: WHITE; font-family: Calibri; font-weight: bold ; font-size:16; vertical-align:middle; line-height:25px; width: 100px; float: left; text-align: center; display: block; border: 1px solid #bbbbbb;}
+.hdrbox			{ filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=WHITE,endColorStr=#9BB5CD); color: BLACK; font-family: calibri; font-weight: bold ; font-size:14; vertical-align:middle; line-height:25px; width: 100px; float: left; text-align: center; display: block; border: 1px solid #bbbbbb;}
+.borderbox		{ display: block;border: 1px solid #bbbbbb;}
+.pagebox		{ filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=WHITE,endColorStr=#1B6AAD); color: Arial ; background-color: #EBF3FB;width: 100px; float: left; text-align: center; display: block; border: 1px solid #bbbbbb;}
+.tab			{ filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=White,endColorStr=Gainsboro); color: ##1a1955 ; font-family: Calibri;  font-weight: bold ; font-size:12; vertical-align:middle; line-height:25px;width: 100px;float: left;text-align: left; display: block;}

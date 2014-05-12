@@ -1,0 +1,166 @@
+@charset "utf-8";
+/* CSS Document */
+ 
+ 
+/* IMPORT */
+ 
+ 
+/***** GLOBAL  *****/
+ 
+body {
+	
+}
+ 
+.IBI_PageBg {
+	
+}
+ 
+.IBI_Focus {
+	
+}
+ 
+ 
+/***** TOPBAR   *****/
+ 
+.IBI_Topbar {
+	
+}
+.IBI_TopbarTitle {
+	
+}
+ 
+.IBI_TopbarColumn1 {
+	
+}
+.IBI_TopbarColumn2 {
+	
+}
+ 
+ 
+/***** FOCUS  *****/
+ 
+.IBI_PageTitle {
+ 
+}
+.IBI_Description {
+	
+}
+ 
+.IBI_HyperlinksBar{
+	
+}
+/***** TABFOLDER *****/
+ 
+.IBI_TabfolderContainer{
+	
+}
+ 
+.IBI_TabfolderStrip {
+	
+}
+.IBI_LinkItem {
+	
+}
+.IBI_LinkItem a:link {
+}
+.IBI_LinkItem a:visited {
+	
+}
+.IBI_LinkItem a:hover {
+	
+}
+.IBI_tabItem {
+	
+}
+.IBI_tabItem-selected {
+}
+.IBI_tabItem-nul {
+	
+}
+.IBI_ReportSet {
+	
+}
+ 
+/***** CONTROL PANEL *****/
+ 
+.IBI_ReportTitle {
+	
+}
+.IBI_ReportControlPanel {
+	
+}
+.IBI_container {
+	
+}
+ 
+.IBI_ReportControlLabel {
+	
+}
+.IBI_ReportControlTarget {
+ 
+}
+/* FORM CONTROLS */
+ 
+.IBI_ReportControlPanelTitle {
+	
+}
+LABEL {
+	
+}
+ 
+.IBI_button {
+   
+}
+ 
+.IBI_btn-run {
+}
+.IBI_btn-reset {
+}
+.IBI_btn-up {
+}
+.IBI_btn-down {
+}
+.IBI_btn-left {
+}
+.IBI_btn-right {
+}
+.IBI_btn-defer {
+}
+.IBI_btn-schedule {
+}
+.IBI_btn-navigatenextlast {
+}
+.IBI_btn-navigateprevfirst {
+}
+.IBI_btn-search {
+}
+.IBI_btn-saveselection {
+}
+.IBI_popupPanel {
+}
+.IBI_popupPanel SELECT {
+}
+.IBI_popupPanel INPUT {
+}
+.IBI_sliderBG {
+ 
+}
+ 
+.IBI_sliderFG {
+	
+}
+ 
+/***** REPORT DISPLAY *****/
+ 
+.IBI_ReportDisplay {
+ 
+}
+ 
+.IBI_Report-iFrame {
+	
+}
+ 
+.IBI_ReportControlTarget TABLE TBODY {
+}
+.IBI_CalendarControl {
+}

@@ -1,0 +1,50 @@
+-* Copyright 1996-2011 Information Builders, Inc. All rights reserved.
+-* File ibidemo_init.fex
+-* The following defines the application name/directory to use for the demonstration
+-SET &IBIDemoApp = 'playground';
+-* The following defines the APPROOT alias value
+-SET &APPRT_ALIAS = 'approot';
+APP PREPENDPATH &IBIDemoApp
+APP HOLD
+-RUN
+-*
+-SET &&IBIDemoYear = '2012' ;
+-* The following sets up WebFOCUS variables for current dates
+-* To ensure the ingtegrity of reports that are based on time periods a hard coded value is
+-* used for the current year.
+-* The hard coded value for the current year is initialized in the WebFOCUS variable, "IBIDemoYear"
+-* in the demonstration initialization procedure, IBIDEMO_INIT.
+-SET &CYY     = &&IBIDemoYear ;
+-SET &CY      = EDIT(&CYY , '$$99');
+-SET &CM      = EDIT (&DATEYYMD,'$$$$$99$$$');
+-SET &CD      = EDIT(&DATEYYMD,'$$$$$$$$99');
+-SET &CQ      = DECODE &CM(01 1 02 1 03 1 04 2 05 2 06 2 07 3 08 3 09 3 10 4 11 4 12 4);
+-SET &CMYY    = &CM || &CYY ;
+-SET &CMY     = &CM || '/' || &CY ;
+-SET &SDATE   = 10000 * &CYY + 0101 ;
+-SET &EDATE   = (10000 * &CYY) + ((100 * &CM) + &CD) ;
+-SET &EDATE_W = (10000 * &CYY) + ((100 * &CM) + &CD) ;
+-* The following sets up WebFOCUS variables for the previous year's dates
+-SET &LYY      = &CYY - 1;
+-SET &LM       = IF &CM  EQ 1 THEN 12 ELSE &CM -1;
+-SET &LQ       = IF &CQ EQ 1 THEN 4  ELSE &CQ - 1;
+-SET &LYYSDATE = 10000 * &LYY + 0101 ;
+-SET &LYYEDATE = (10000 * &LYY) + ((100 * &CM) + &CD) ;
+-SET &LYYEDATE_W = (10000 * &LYY) + ((100 * &CM) + &CD) ;
+-* The following sets up the URL to use for displaying the empty report HTML page when no records are found
+-*-SET &&EmptyRptHTM = 'ibidemo_emptyreport.htm';
+-*-SET &&EmptyRptURL = '/' || &APPRT_ALIAS || '/' || &IBIDemoApp || '/'|| &&EmptyRptHTM ;
+-* The following turns on Server Side Graphics
+SET GRAPHEDIT=SERVER
+-RUN
+-* Setting up web-based URL references to graphic images for embedding as dynamic image references in reports.
+-SET &GreenKey = '''<img src="/approot/' | &IBIDemoApp.EVAL | '/g1.gif" align="absmiddle" border="0">''';
+-SET &YellowKey = '''<img src="/approot/' | &IBIDemoApp.EVAL | '/y1.gif" align="absmiddle" border="0">''';
+-SET &RedKey = '''<img src="/approot/' | &IBIDemoApp.EVAL | '/r1.gif" align="absmiddle" border="0">''';
+DEFINE FILE tradesalesview ADD
+GreenKey/A200 WITH TRADEID = &GreenKey ;
+YellowKey/A200 WITH TRADEID = &YellowKey ;
+RedKey/A200 WITH TRADEID = &RedKey ;
+END
+-RUN
+ 

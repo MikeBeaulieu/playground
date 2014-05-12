@@ -1,0 +1,67 @@
+-* Copyright 1996-2011 Information Builders, Inc. All rights reserved.
+-*  Purpose:        Used to return a field name and its title
+-*  Usage:          EX GETTITLES <parm 1>
+-*  Takes :         one scalar parms:
+-*                  <parm 1> - the name of the table to use
+-*  Output:         &&ColName<n> &&ColAlias<n> &&ColTitle<n>
+-*                  where "n" is the index for the indexed variables.
+-*  Notes :         Returns values for all fields found in the database specified.
+-*================================================================================
+-*
+-*-SET &ECHO=ALL;
+-CHK_TBNAME
+-IF &1.EXISTS GOTO CHK_COLTYPE ELSE GOTO ERR_NOTBN ;
+-CHK_COLTYPE
+-*-TYPE Parm 1 = &1
+-GETCOLS
+-SET &SRCTBNLEN  = ARGLEN(66,&1,'I4');
+-SET &SRC_TBNAME = UPCASE(&SRCTBNLEN,&1,'A&SRCTBNLEN.EVAL') ;
+-*-TYPE &SRCTBNLEN  &SRC_TBNAME
+DEFINE FILE SYSCOLUM ADD
+TBNAME_UPPER/A64 = UPCASE(64,TBNAME,TBNAME_UPPER);
+NameAliasTitleUsage/A265=NAME || '~'|| ALIAS || '~'|| TITLE || '~' || USAGE ;
+END
+-RUN
+TABLE FILE SYSCOLUM
+PRINT
+      NameAliasTitleUsage
+WHERE (TBNAME_UPPER EQ '&SRC_TBNAME');
+ON TABLE HOLD AS COLS
+END
+-RUN
+-IF &LINES EQ 0 THEN GOTO ERR_NOMETA ;
+-GOTO SETCOLVARS
+-ERR_NOTBN
+-TYPE * Table name not specified
+-GOTO COLSDONE
+-ERR_NOMETA
+-TYPE * No metadata found for &SRC_TBNAME
+-GOTO COLSDONE
+-*
+-SETCOLVARS
+-SET &READ_DONE = 0 ;
+-SET &N         = 0 ;
+-DEFAULT &ColName  = '';
+-DEFAULT &ColTitle = '';
+-SET &COLLines = &LINES ;
+-*-REPEAT READCOLS WHILE &READ_DONE EQ 0 ;
+-REPEAT READCOLS &COLLines TIMES ;
+-READ COLS, &Line
+-* The following verifies if the record/file is empty
+-IF &Line.EXISTS THEN GOTO SET_TITLES ELSE GOTO READCOLS ;
+-SET_TITLES
+-SET &N=&N+1;
+-SET &&ColName.&N  = GETTOK(&Line,&Line.LENGTH,'1','~',&Line.LENGTH,A&Line.LENGTH) ;
+-SET &&ColName.&N  = TRUNCATE (&&ColName.&N );
+-SET &&ColAlias.&N = GETTOK(&Line,&Line.LENGTH,'2','~',&Line.LENGTH,A&Line.LENGTH) ;
+-SET &&ColAlias.&N = TRUNCATE (&&ColAlias.&N );
+-SET &&ColTitle.&N = GETTOK(&Line,&Line.LENGTH,'3','~',&Line.LENGTH,A&Line.LENGTH);
+-SET &&ColTitle.&N = TRUNCATE (&&ColTitle.&N);
+-SET &&ColUsage.&N = GETTOK(&Line,&Line.LENGTH,'4','~',&Line.LENGTH,A&Line.LENGTH);
+-SET &&ColUsage.&N = TRUNCATE (&&ColUsage.&N);
+-*-TYPE * Line=&Line  &Line.LENGTH * * ColName.&N=&&ColName.&N * ColAlias.&N=&&ColAlias.&N  * ColTitle.&N=&&ColTitle.&N *
+-NEXT_RECORD
+-READCOLS
+-*
+-*-TYPE * Column variables done
+-COLSDONE

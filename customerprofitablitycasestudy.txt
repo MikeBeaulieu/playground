@@ -1,0 +1,12 @@
+1.00	90051385.00	Australia	Joseph Kusztor	659595.00	659595 (TradeId)	Revenue	Trade Revenue	Gross Profit	Gross Profit	388.37	AUD	Jan 22 2012
+2.00	90051385.00	Australia	Joseph Kusztor	659595.00	576640 (SettlementId)	Revenue	Trade Revenue	Service Charge	Service Charge	15.00	AUD	Jan 22 2012
+3.00	90051385.00	Australia	Joseph Kusztor	659595.00	579824 (SettlementId)	Revenue	Trade Revenue	Service Charge	Service Charge	30.00	AUD	Jan 22 2012
+4.00	90051385.00	Australia	Joseph Kusztor	659595.00	837865 (PaymentId)	Expense	Outgoing Payment	Wire (International)	Outgoing Wire (International)	-20.00	AUD	Jan 22 2012
+5.00	90051385.00	Australia	Joseph Kusztor	659595.00	842198 (PaymentId)	Expense	Outgoing Payment	Wire (International)	Outgoing Wire (International)	-20.00	AUD	Jan 22 2012
+6.00	90051385.00	Australia	Joseph Kusztor	659595.00	842199 (PaymentId)	Expense	Outgoing Payment	Wire (International)	Outgoing Wire (International)	-20.00	AUD	Jan 22 2012
+7.00	90051385.00	Australia	Joseph Kusztor	659595.00	576640 (SettlementId)	Expense	Fixed  Cost	Settlement Fee	Settlement Fee	-5.00	AUD	Jan 22 2012
+8.00	90051385.00	Australia	Joseph Kusztor	659595.00	579824 (SettlementId)	Expense	Fixed  Cost	Settlement Fee	Settlement Fee	-5.00	AUD	Jan 22 2012
+9.00	90051385.00	Australia	Joseph Kusztor	659595.00	H86196 (Holding #)	Expense	Incoming Payment	BPay	Incoming BPay	-5.00	AUD	Jan 22 2012
+10.00	90051385.00	Australia	Joseph Kusztor	659595.00	D526113 (Dep Slip #)	Expense	Incoming Payment	BPay	Incoming BPay	-5.00	AUD	Jan 22 2012
+11.00	90051385.00	Australia	Joseph Kusztor	659595.00	659595 (TradeId)	Revenue	Cash Flow	Forward Deposit	Forward Deposit	8.30	AUD	Jan 22 2012
+12.00	90051385.00	Australia	Joseph Kusztor	659595.00	659595 (TradeId)	Expense	Fixed Cost	Small Trade Charge	Small Trade Charge	0.00	AUD	Jan 22 2012

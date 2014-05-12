@@ -1,0 +1,118 @@
+-* Copyright 1996-2011 Information Builders, Inc. All rights reserved.
+-* File ibidemo_variance_init.fex
+-* Setting up default values for report specific variables
+-*
+-DEFAULT &1                    = '';
+-DEFAULT &MEASURE              = 'CALCGROSSPROFIT' ;
+-DEFAULT &DIMENSION            = 'BRANCH_COUNTRYCODE';
+-DEFAULT &DRILL1               = 'BRANCH_COUNTRYCODE' ;
+-DEFAULT &DRILL2               = 'BRANCH' ;
+-DEFAULT &DRILL3               = 'TRADER_NAME' ;
+-DEFAULT &NEXT_DRILL           = 'REGION' ;
+-DEFAULT &WFFMT                = 'HTML';
+-DEFAULT &DIMV                 = 'FOC_NONE';
+-DEFAULT &PERIOD               = 'M' ;
+-DEFAULT &CHANGE_PREV          = 'Change from,Previous Period' ;
+-DEFAULT &CHANGE_PREV%         = '% Change' ;
+-DEFAULT &CHANGE_LYY           = 'Change from,Same Period,Last Year' ;
+-DEFAULT &CHANGE_LYY%          = '% Change' ;
+-DEFAULT &DRILL                = 0 ;
+-DEFAULT &DRLVL                = 0 ;
+-DEFAULT &NEXT_DRILLT          = 'Next Drill Down: ';
+-DEFAULT &DRILL_LIMIT          = 3 ;
+-DEFAULT &DRV1_                = 'FN' ;
+-DEFAULT &DRV2_                = 'FN' ;
+-DEFAULT &DRV3_                = 'FN' ;
+-DEFAULT &DRILLVAL1            = 'FOC_NONE' ;
+-DEFAULT &DRILLVAL2            = 'FOC_NONE' ;
+-DEFAULT &DRILLVAL3            = 'FOC_NONE' ;
+-DEFAULT &LAST_P_TXT           = 'Last,Period' ;
+-DEFAULT &THIS_P_TXT           = 'This,Period';
+-DEFAULT &SAME_LYY_TXT         = 'Same Period,Last Year' ;
+-DEFAULT &PERIODTXT_1          = 'Period' ;
+-DEFAULT &PERIODTXT_2          = 'Yearly';
+-DEFAULT &PERIODTXT_3          = 'Quarterly';
+-DEFAULT &PERIODTXT_4          = 'Monthly';
+-DEFAULT &RPT_TITLE            = 'Variance';
+-DEFAULT &DRILLTXT             = '' ;
+-SET &N                        = 0 ;
+-SET &DRILL1 = IF &DRLVL EQ 0 THEN &DIMENSION ELSE &DRILL1 ;
+-SET &MEAS_TITLE               = &MEASURE ;
+-SET &MEAS_USAGE               = 'D20.2' ;
+-SET &DRILLTXT1                = &DRILL1 ;
+-SET &DRILLTXT2                = &DRILL2 ;
+-SET &DRILLTXT3                = &DRILL3 ;
+-*
+-* Setting up title varialbes for use in headings - BEGIN *
+-SET &1 = 'FirmaSales';
+-INCLUDE IBIDEMO_GETTITLE
+-SET &N = 0 ;
+-SET &totLines = &LINES ;
+-REPEAT SetTitles &totLines TIMES ;
+-SET &N = &N + 1;
+-IF (&&ColName.&N.EXISTS) AND (&&ColAlias.&N.EXISTS) AND (&&ColTitle.&N.EXISTS) THEN GOTO SetVarParms ELSE GOTO TitlesDone ;
+-SetVarParms
+-SET &MEAS_TITLE = IF ((&MEASURE EQ &&ColName.&N) OR (&MEASURE   EQ &&ColAlias.&N)) THEN &&ColTitle.&N ELSE &MEAS_TITLE ;
+-SET &MEAS_USAGE = IF ((&MEASURE EQ &&ColName.&N) OR (&MEASURE   EQ &&ColAlias.&N)) THEN &&ColUsage.&N ELSE &MEAS_USAGE ;
+-SET &DRILLTXT1 = IF ((&DRILL1 EQ &&ColName.&N) OR (&DRILL1   EQ &&ColAlias.&N)) THEN &&ColTitle.&N ELSE &DRILLTXT1 ;
+-SET &DRILLTXT2 = IF ((&DRILL2 EQ &&ColName.&N) OR (&DRILL2   EQ &&ColAlias.&N)) THEN &&ColTitle.&N ELSE &DRILLTXT2 ;
+-SET &DRILLTXT3 = IF ((&DRILL3 EQ &&ColName.&N) OR (&DRILL3   EQ &&ColAlias.&N)) THEN &&ColTitle.&N ELSE &DRILLTXT3 ;
+-SetTitles
+-TitlesDone
+-* Setting up title varialbes for use in headings - END *
+-*
+-SET &PERIODTXT_5=  IF &PERIOD  EQ 'Y' THEN &PERIODTXT_2
+-              ELSE IF &PERIOD EQ 'Q' THEN &PERIODTXT_3
+-              ELSE IF &PERIOD EQ 'M' THEN &PERIODTXT_4 ELSE &PERIOD ;
+-SET &PERIODTXT = &PERIODTXT_1 | ':  ' | &PERIODTXT_5 ;
+-SET &THIS_P_TIME    = IF &PERIOD EQ 'Y' THEN &CYY
+- ELSE IF &PERIOD EQ 'Q' THEN &CQ |' / '| &CYY
+- ELSE IF &PERIOD EQ 'M' THEN &CM |' / '| &CYY ELSE &CYY ;
+-SET &THIS_PERIOD    = &THIS_P_TXT | ',' | &MEAS_TITLE | ',' | &THIS_P_TIME ;
+-SET &LAST_P_TIME    = IF &PERIOD EQ 'Y' THEN &LYY
+- ELSE IF (&PERIOD EQ 'Q') AND (&CQ EQ 1) THEN &LQ |' / '| &LYY
+- ELSE IF (&PERIOD EQ 'Q') AND (&CQ NE 1) THEN &LQ |' / '| &CYY
+- ELSE IF (&PERIOD EQ 'M') AND (&CM  EQ 1) THEN &LM |' / '| &LYY
+- ELSE IF (&PERIOD EQ 'M') AND (&CM  NE 1) THEN &LM |' / '| &CYY
+- ELSE &LYY ;
+-SET &LAST_PERIOD     = &LAST_P_TXT | ',' | &MEAS_TITLE | ',' |  &LAST_P_TIME ;
+-SET &SAME_LYY_TIM    = IF &PERIOD EQ 'Y' THEN &LYY
+- ELSE IF &PERIOD EQ 'Q' THEN &CQ |' / '| &LYY
+- ELSE IF &PERIOD EQ 'M' THEN &CM |' / '| &LYY ELSE &LYY;
+-SET &SAME_LYY   = &SAME_LYY_TXT | ',' | &MEAS_TITLE | ',' | &SAME_LYY_TIM ;
+-*
+-* Setting up Drill 1 (first drill down) values
+-SET &DRILLVAL1 = IF (&DRILL NE 0) AND (&DIMENSION EQ &DRILL1) AND
+- (&DIMV NE 'FOC_NONE')  THEN &DIMV
+- ELSE IF &DRV1_ NE 'FN' THEN &DRV1_
+-  ELSE  &DRILLVAL1 ;
+-SET &DRV1_ = IF &DRILLVAL1 NE 'FOC_NONE' THEN &DRILLVAL1 ELSE 'FN';
+-SET &DRILLVALTXT1 = IF &DRILLVAL1 EQ 'FOC_NONE' THEN 'All' ELSE &DRILLVAL1;
+-*
+-* Setting up Drill 2 (second drill down) values
+-SET &DRILLVAL2 = IF (&DRILL NE 0) AND (&DIMENSION EQ &DRILL2) AND
+- (&DIMV NE 'FOC_NONE') THEN &DIMV
+- ELSE IF &DRV2_ NE 'FN' THEN &DRV2_
+-  ELSE  &DRILLVAL2 ;
+-SET &DRV2_ = IF &DRILLVAL2 NE 'FOC_NONE' THEN &DRILLVAL2 ELSE 'FN';
+-SET &DRILLVALTXT2 = IF &DRILLVAL2 EQ 'FOC_NONE' THEN 'All' ELSE &DRILLVAL2;
+-*
+-* Setting up Drill 3 (third drill down) values
+-SET &DRILLVAL3 = IF (&DRILL NE 0) AND (&DIMENSION EQ &DRILL3) AND
+- (&DIMV NE 'FOC_NONE') THEN &DIMV
+- ELSE IF &DRV3_ NE 'FN' THEN &DRV3_
+-  ELSE  &DRILLVAL3 ;
+-SET &DRV3_ = IF &DRILLVAL3 NE 'FOC_NONE' THEN &DRILLVAL3 ELSE 'FN';
+-SET &DRILLVALTXT3 = IF &DRILLVAL3 EQ 'FOC_NONE' THEN 'All' ELSE &DRILLVAL3;
+-*
+-* Setting drill down variables
+-* Setting up next drill down value for display in report
+-SET &DRLVL = IF &DRLVL LT &DRILL_LIMIT THEN &DRLVL + 1  ELSE &DRLVL;
+-SET &NEXT_LVL = IF &DRLVL LT &DRILL_LIMIT THEN &DRLVL + 1  ELSE &DRLVL;
+-SET &NEXT_DRILL = IF &DRLVL LT 3 THEN &DRILL.&NEXT_LVL ELSE ' ' ;
+-SET &NEXTDRILLTXT = IF &DRLVL LT 3 THEN &NEXT_DRILLT |'  '| &DRILLTXT.&NEXT_LVL  ELSE ' ';
+-*
+-* Setting up Dimension (hold the current field) values
+-SET &DIMENSION = IF &DRLVL EQ 1 THEN &DIMENSION
+- ELSE IF &DRLVL LT 4 THEN &DRILL.&DRLVL
+-   ELSE &DIMENSION ;
